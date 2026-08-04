@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Touch Grass logo</title>
+  <path fill="#E8EFD4" d="M266 18c105-7 200 40 225 125 29 96-36 213-137 284-87 61-218 72-294 13C-12 378 31 237 111 138 158 80 205 22 266 18Z"/>
+  <g fill="none" stroke="#789052" stroke-width="13" stroke-linecap="round">
+    <path d="M256 170v171M171 256h170M197 197l118 118M315 197 197 315M230 164l26 92 27-92M282 348l-26-92-27 92M164 230l92 26-92 27M348 282l-92-26 92-27"/>
+  </g>
+</svg>

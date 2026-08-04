@@ -1,0 +1,10 @@
+{
+  "name": "touch-grass-control",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "build": "node -e \"console.log('Static app: build step is not required')\""
+  }
+}

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Touch Grass — настройки</title>
+    <link rel="stylesheet" href="home.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header><div class="brand"><img src="assets/touch-grass-logo.svg" alt="Touch Grass"><strong>touch <i>grass</i></strong></div><div class="state"><b id="state-dot"></b><span id="state-label">Загрузка</span></div></header>
+      <section class="hero"><div><p class="eyebrow">ПРОСТРАНСТВО ФОКУСА</p><h1>Настрой меньше<br><em>шума вокруг.</em></h1><p>Здесь живут сайты и расписания, которые расширение будет защищать.</p></div><div class="leaf">✳</div></section>
+      <section class="toolbar"><div><strong id="protection-title">Защита включена</strong><small>Расширение работает по расписанию</small></div><button id="protection-toggle">Отключить</button></section>
+      <div class="columns"><section class="panel"><div class="panel-head"><div><p class="eyebrow">СПИСОК БЛОКИРОВКИ</p><h2>Сайты под защитой</h2></div><button class="add" id="add-site">＋ Добавить</button></div><div id="site-list"></div></section><section class="panel"><div class="panel-head"><div><p class="eyebrow">АВТОМАТИЗАЦИЯ</p><h2>Расписание</h2></div><button class="add" id="add-schedule">＋ Добавить</button></div><div id="schedule-list"></div></section></div>
+      <footer>Touch Grass 0.1 <span>Все настройки хранятся локально в Chrome</span></footer>
+    </main>
+    <div class="modal-backdrop" id="modal-backdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><button class="modal-close" id="modal-close" aria-label="Закрыть">×</button><p class="eyebrow" id="modal-eyebrow">НАСТРОЙКА</p><h2 id="modal-title">Добавить</h2><form id="modal-form"><div id="modal-fields"></div><div class="modal-actions"><button type="button" class="cancel" id="modal-cancel">Отмена</button><button type="submit" class="save">Сохранить</button></div></form></section></div>
+    <script src="home.js"></script>
+  </body>
+</html>
