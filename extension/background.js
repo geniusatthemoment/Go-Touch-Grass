@@ -1,10 +1,11 @@
+importScripts('url-rules.js')
 const DYNAMIC_RULE_ID_START = 1000
 const FOCUS_DURATION_MINUTES = 25
 
 const defaultState = {
   enabled: true,
   sites: [
-    { name: 'YouTube', domain: 'youtube.com' },
+    { name: 'YouTube Shorts', domain: 'youtube.com/shorts' },
     { name: 'TikTok', domain: 'tiktok.com' },
     { name: 'Reddit', domain: 'reddit.com' },
     { name: 'Telegram Web', domain: 'web.telegram.org' }
@@ -18,6 +19,10 @@ const defaultState = {
 
 chrome.runtime.onInstalled.addListener(async () => {
   const current = await chrome.storage.local.get(defaultState)
+  // Keep regular YouTube videos available when upgrading this local installation.
+  current.sites = current.sites.map(site => matchesTarget('https://www.youtube.com/watch?v=test', site.domain)
+    ? { name: 'YouTube Shorts', domain: 'youtube.com/shorts' } : site)
+  current.sites = current.sites.filter((site, index, sites) => sites.findIndex(other => normalizeTarget(other.domain) === normalizeTarget(site.domain)) === index)
   await chrome.storage.local.set(current)
   await chrome.alarms.create('schedule-tick', { periodInMinutes: 1 })
   await refreshBlocking()
@@ -63,14 +68,10 @@ async function refreshBlocking() {
     id: DYNAMIC_RULE_ID_START + index,
     priority: 1,
     action: { type: 'redirect', redirect: { extensionPath: '/blocked.html' } },
-    condition: { urlFilter: `||${cleanDomain(site.domain)}^`, resourceTypes: ['main_frame'] }
+    condition: { regexFilter: targetRegex(site.domain), isUrlFilterCaseSensitive: true, resourceTypes: ['main_frame'] }
   })) : []
   await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds, addRules })
   if (focusActive) await chrome.alarms.create('focus-end', { when: Number(state.focusUntil) })
-}
-
-function cleanDomain(domain) {
-  return String(domain || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0]
 }
 
 async function startFocus() {

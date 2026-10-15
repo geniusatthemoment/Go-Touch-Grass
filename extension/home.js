@@ -26,7 +26,7 @@ function openModal(mode, item = null) {
   if (mode === 'site') {
     $('#modal-eyebrow').textContent = 'СПИСОК БЛОКИРОВКИ'
     $('#modal-title').textContent = 'Добавить сайт'
-    $('#modal-fields').innerHTML = '<label class="field"><span>ДОМЕН САЙТА</span><input id="modal-domain" required placeholder="например, instagram.com" autocomplete="off"></label>'
+    $('#modal-fields').innerHTML = '<label class="field"><span>САЙТ ИЛИ РАЗДЕЛ</span><input id="modal-domain" required placeholder="например, youtube.com/shorts" autocomplete="off"></label>'
     $('#modal-domain').focus()
   } else {
     $('#modal-eyebrow').textContent = 'АВТОМАТИЗАЦИЯ'
@@ -50,8 +50,10 @@ $('#modal-form').onsubmit = async event => {
   event.preventDefault()
   const data = await state()
   if (modalMode === 'site') {
-    const clean = $('#modal-domain').value.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0]
-    if (!clean || data.sites.some(site => site.domain === clean)) return
+    const input = $('#modal-domain')
+    let clean
+    try { clean = normalizeTarget(input.value) } catch { input.setCustomValidity('Укажи домен или адрес раздела сайта'); input.reportValidity(); input.oninput = () => input.setCustomValidity(''); return }
+    if (data.sites.some(site => normalizeTarget(site.domain) === clean)) { input.setCustomValidity('Этот адрес уже есть в списке'); input.reportValidity(); input.oninput = () => input.setCustomValidity(''); return }
     await chrome.storage.local.set({ sites: [...data.sites, { name: clean.split('.')[0].replace(/^./, x => x.toUpperCase()), domain: clean }] })
   } else {
     const item = { id: editingScheduleId || Date.now(), title: $('#modal-title-input').value.trim(), days: daysFromValue($('#modal-days').value), start: $('#modal-start').value, end: $('#modal-end').value, active: editingScheduleId ? data.schedules.find(x => x.id === editingScheduleId)?.active !== false : true }
